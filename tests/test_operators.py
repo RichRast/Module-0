@@ -1,4 +1,3 @@
-from signal import signal
 from minitorch.operators import (
     EPS,
     mul,
@@ -32,7 +31,12 @@ from minitorch import MathTest
 @pytest.mark.task0_1
 @given(small_floats, small_floats)
 def test_same_as_python(x, y):
-    "Check that the main operators all return the same value of the python version"
+    """Check that the main operators all compute the same value of the python version.
+    
+    Args:
+        x (float): input
+        y (float): input
+    """
     assert_close(mul(x, y), x * y)
     assert_close(add(x, y), x + y)
     assert_close(neg(x), -x)
@@ -105,47 +109,60 @@ def test_sigmoid(a):
     * one minus sigmoid is the same as negative sigmoid
     * It crosses 0 at 0.5
     * it is  strictly increasing.
+
+    Args:
+        a (float): input
     """
-    assert sigmoid(a)>=0.0 and sigmoid(a)<=1.0
-    assert_close(1-sigmoid(a),sigmoid(-a))
+    assert sigmoid(a) >= 0.0 and sigmoid(a) <= 1.0
+    assert_close(1 - sigmoid(a), sigmoid(-a))
     assert_close(sigmoid(0), 0.5)
-    assert sigmoid(a) <= sigmoid(a+EPS)
+    assert sigmoid(a) <= sigmoid(a + EPS)
+
 
 @pytest.mark.task0_2
 @given(small_floats, small_floats, small_floats)
 def test_transitive(a, b, c):
     "Test the transitive property of less-than (a < b and b < c implies a < c)"
-    if (a<b and b<c): 
-       assert a<c
+    if a < b and b < c:
+        assert a < c
 
 
 @pytest.mark.task0_2
 @given(small_floats, small_floats)
-def test_symmetric(a,b):
+def test_symmetric(a, b):
     """
     Write a test that ensures that :func:`minitorch.operators.mul` is symmetric, i.e.
     gives the same value regardless of the order of its input.
+
+    Args:
+        a (float): input
+        b (float): input
     """
-    assert_close(mul(a,b), mul(b,a))
+    assert_close(mul(a, b), mul(b, a))
 
 
 @pytest.mark.task0_2
 @given(small_floats, small_floats, small_floats)
-def test_distribute(a,b,c):
+def test_distribute(a, b, c):
     r"""
     Write a test that ensures that your operators distribute, i.e.
     :math:`z \times (x + y) = z \times x + z \times y`
+
+    Args:
+        a (float): input
+        b (float): input
+        c (float): input
     """
-    assert_close(mul(c, add(a,b)), add(mul(c,a), mul(c,b)))
+    assert_close(mul(c, add(a, b)), add(mul(c, a), mul(c, b)))
 
 
 @pytest.mark.task0_2
 @given(small_floats, small_floats)
-def test_other(a,b):
+def test_other(a, b):
     """
     Write a test that ensures some other property holds for your functions.
     """
-    assert_close(add(a,b), add(b,a))
+    assert_close(add(a, b), add(b, a))
 
 
 # ## Task 0.3  - Higher-order functions
@@ -172,8 +189,12 @@ def test_sum_distribute(ls1, ls2):
     """
     Write a test that ensures that the sum of `ls1` plus the sum of `ls2`
     is the same as the sum of each element of `ls1` plus each element of `ls2`.
+
+    Args:
+        ls1 (list of floats): input
+        ls2 (list of floats): input
     """
-    assert_close(sum(ls1) + sum(ls2), sum(ls1+ls2))
+    assert_close(sum(ls1) + sum(ls2), sum(ls1 + ls2))
 
 
 @pytest.mark.task0_3

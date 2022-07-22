@@ -5,7 +5,7 @@ Collection of the core mathematical operators used throughout the code base.
 
 from decimal import InvalidOperation
 import math
-import pdb
+
 # ## Task 0.1
 
 # Implementation of a prelude of elementary functions.
@@ -13,7 +13,7 @@ import pdb
 
 def mul(x, y):
     ":math:`f(x, y) = x * y`"
-    return x*y
+    return x * y
 
 
 def id(x):
@@ -23,7 +23,7 @@ def id(x):
 
 def add(x, y):
     ":math:`f(x, y) = x + y`"
-    return x+y
+    return x + y
 
 
 def neg(x):
@@ -33,24 +33,25 @@ def neg(x):
 
 def lt(x, y):
     ":math:`f(x) =` 1.0 if x is less than y else 0.0"
-    return 1.0 if x<y else 0.0
+    return 1.0 if x < y else 0.0
 
 
 def eq(x, y):
     ":math:`f(x) =` 1.0 if x is equal to y else 0.0"
-    return 1.0 if x==y else 0.0
+    return 1.0 if x == y else 0.0
 
 
 def max(x, y):
     ":math:`f(x) =` x if x is greater than y else y"
-    return x if x>y else y
+    return x if x > y else y
 
 
 def is_close(x, y):
     ":math:`f(x) = |x - y| < 1e-2` "
-    if ((x-y) or (y-x)) <1e-2:
+    if ((x - y) or (y - x)) < 1e-2:
         return True
-    else: return False
+    else:
+        return False
 
 
 def sigmoid(x):
@@ -71,10 +72,10 @@ def sigmoid(x):
     Returns:
         float : sigmoid value
     """
-    if x>=0:
-        return (1.0/(1.0+exp(-x)))
+    if x >= 0:
+        return 1.0 / (1.0 + exp(-x))
     else:
-        return exp(x)/(1.0+exp(x))
+        return exp(x) / (1.0 + exp(x))
 
 
 def relu(x):
@@ -89,7 +90,7 @@ def relu(x):
     Returns:
         float : relu value
     """
-    return x if x>0.0 else 0.0
+    return x if x > 0.0 else 0.0
 
 
 EPS = 1e-6
@@ -107,25 +108,25 @@ def exp(x):
 
 def log_back(x, d):
     r"If :math:`f = log` as above, compute d :math:`d \times f'(x)`"
-    return d*inv(x)
+    return d * inv(x)
 
 
 def inv(x):
     ":math:`f(x) = 1/x`"
-    if x!=0.0:
-        return 1.0/x
+    if x != 0.0:
+        return 1.0 / x
     else:
         raise InvalidOperation("x cannot be 0!")
 
 
 def inv_back(x, d):
     r"If :math:`f(x) = 1/x` compute d :math:`d \times f'(x)`"
-    return d*(-1.0/(x**2))
+    return d * (-1.0 / (x ** 2))
 
 
 def relu_back(x, d):
     r"If :math:`f = relu` compute d :math:`d \times f'(x)`"
-    if x>0.0:
+    if x > 0.0:
         return d
     else:
         return 0.0
@@ -152,15 +153,17 @@ def map(fn):
         function : A function that takes a list, applies `fn` to each element, and returns a
         new list
     """
+
     def fn2(a):
-        #lambda x:[fn(i) for i in x]
+        # lambda x:[fn(i) for i in x]
         return [fn(x) for x in a]
+
     return fn2
 
 
 def negList(ls):
     "Use :func:`map` and :func:`neg` to negate each element in `ls`"
-    return map(neg)(ls) 
+    return map(neg)(ls)
 
 
 def zipWith(fn):
@@ -179,9 +182,11 @@ def zipWith(fn):
         applying fn(x, y) on each pair of elements.
 
     """
-    def fn2(ls1,ls2):
-        #lambda x,y:[fn(i,j) for i,j in zip(x,y)]
-        return [fn(x,y) for x,y in zip(ls1,ls2)]
+
+    def fn2(ls1, ls2):
+        # lambda x,y:[fn(i,j) for i,j in zip(x,y)]
+        return [fn(x, y) for x, y in zip(ls1, ls2)]
+
     return fn2
 
 
@@ -206,17 +211,20 @@ def reduce(fn, start):
         :math:`x_1 \ldots x_n` and computes the reduction :math:`fn(x_3, fn(x_2,
         fn(x_1, x_0)))`
     """
-    
+
     def fn2(ls):
-        q=start
+        q = start
         for val in ls:
-            q=fn(val,q)
+            q = fn(val, q)
         return q
+
     return fn2
-            
+
+
 def sum(ls):
     "Sum up a list using :func:`reduce` and :func:`add`."
     return reduce(add, 0.0)(ls)
+
 
 def prod(ls):
     "Product of a list using :func:`reduce` and :func:`mul`."

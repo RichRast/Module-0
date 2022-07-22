@@ -17,33 +17,39 @@ class Module:
 
     def modules(self):
         "Return the direct child modules of this module."
-        return self.__dict__["_modules"].values()
+        # self._modules.values()
+        return self.__dict__["_modules"].values()  
 
     def train(self):
         "Set the mode of this module and all descendent modules to `train`."
-        # TODO: Implement for Task 0.4.
-        raise NotImplementedError('Need to implement for Task 0.4')
+        self.training = True
+        for m in self.modules():
+            m.train()
 
     def eval(self):
         "Set the mode of this module and all descendent modules to `eval`."
-        # TODO: Implement for Task 0.4.
-        raise NotImplementedError('Need to implement for Task 0.4')
+        self.training = False
+        for m in self.modules():
+            m.eval()
 
     def named_parameters(self):
         """
         Collect all the parameters of this module and its descendents.
 
-
         Returns:
             list of pairs: Contains the name and :class:`Parameter` of each ancestor parameter.
         """
-        # TODO: Implement for Task 0.4.
-        raise NotImplementedError('Need to implement for Task 0.4')
+        list_named_params = [(i,j) for i,j in self._parameters.items()]
+
+        for n, m in self._modules.items():
+            list_named_params.extend([(".".join([str(n), str(k)]), v) for k, v in m.named_parameters()])
+
+        return list_named_params
 
     def parameters(self):
         "Enumerate over all the parameters of this module and its descendents."
-        # TODO: Implement for Task 0.4.
-        raise NotImplementedError('Need to implement for Task 0.4')
+        return [param for (_, param) in self.named_parameters()]
+
 
     def add_parameter(self, k, v):
         """
